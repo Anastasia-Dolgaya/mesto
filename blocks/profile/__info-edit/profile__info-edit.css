@@ -1,6 +1,7 @@
-.profile__title-edit {
+.profile__info-edit {
   display: flex;
   column-gap: 25px;
   align-items: center;
   position: relative;
 }
+

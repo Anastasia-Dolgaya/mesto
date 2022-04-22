@@ -4,4 +4,12 @@
   background-size: contain;
   width: 10px;
   height: 10px;
+  margin: auto;
+}
+
+@media screen and (max-width: 570px) {
+  .profile__edit-button-image {
+    width: 7.5px;
+    height: 7.5px;
+  }
 }
