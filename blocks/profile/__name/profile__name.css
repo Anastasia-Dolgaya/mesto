@@ -7,6 +7,13 @@
   line-height: 1.14;
 }
 
+@media screen and (max-width: 750px) {
+  .profile__name {
+    font-size: 4.5vw;
+    line-height: 1.14;
+  }
+}
+
 @media screen and (max-width: 570px) {
   .profile__name {
     font-size: 27px;

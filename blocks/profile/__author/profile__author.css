@@ -3,6 +3,12 @@
   column-gap: 30px;
 }
 
+@media screen and (max-width: 750px) {
+  .profile__author {
+    column-gap: 15px;
+  }
+}
+
 @media screen and (max-width: 570px) {
   .profile__author {
     flex-direction: column;

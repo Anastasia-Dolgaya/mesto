@@ -1,5 +1,5 @@
 .element__title {
-  max-width: 200px;
+
   font-style: normal;
   font-weight: 900;
   font-size: 24px;
@@ -10,4 +10,5 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  flex: 1;
 }
