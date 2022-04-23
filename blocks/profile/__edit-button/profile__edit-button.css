@@ -9,6 +9,10 @@
   transition: opacity 0.3s ease-in-out;
   padding: 0;
   flex-shrink: 0;
+  background-image: url(../../../images/edit-button.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 10px;
 }
 
 .profile__edit-button:hover {
@@ -25,6 +29,7 @@
 
 @media screen and (max-width: 570px) {
   .profile__edit-button {
+    background-size: 7.5px;
     position: absolute;
     right: -28px;
     top: 8px;
