@@ -1,7 +1,7 @@
 .element__title-container {
   display: flex;
   flex-wrap: nowrap;
-  margin: 25px 30px 26px 21px;
+  margin: 25px 19px 26px 21px;
   align-items: center;
   justify-content: space-between;
   column-gap: 10px;
