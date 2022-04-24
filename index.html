@@ -16,7 +16,7 @@
     <main>
       <section class="profile">
         <div class="profile__author">
-          <div class="profile__avatar"></div>
+          <img class="profile__avatar" src="./images/avatar.jpg" alt="Портрет Жака-Ив Кусто">
           <div class="profile__info">
             <div class="profile__info-edit">
               <h1 class="profile__name">Жак-Ив Кусто</h1>
@@ -97,15 +97,17 @@
   </div>
 
   <div class="popup">
-    <form class="popup__container">
+    <div class="popup__container">
       <button type="button" class="popup__close-button"></button>
-      <h2 class="popup__title">Редактировать профиль</h2>
-      <input type="text" class="popup__field popup__field-name" name="name" value="Жак-Ив Кусто">
-      <input type="text" class="popup__field popup__field-job" name="job" value="Исследователь океана">
-      <button class="popup__save-button">Сохранить</button>
-    </form>
+      <form class="popup__form" name="profile-edit">
+        <h2 class="popup__title">Редактировать профиль</h2>
+        <input type="text" class="popup__field popup__field_type_name" name="name" value="Жак-Ив Кусто">
+        <input type="text" class="popup__field popup__field_type_job" name="job" value="Исследователь океана">
+        <button type="submit" class="popup__save-button">Сохранить</button>
+      </form>
+    </div>
   </div>
 
-  <script src="./index.js"></script>
+  <script src="./scrypt/index.js"></script>
 </body>
 </html>

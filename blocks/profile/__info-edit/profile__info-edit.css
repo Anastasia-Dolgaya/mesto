@@ -1,6 +1,6 @@
 .profile__info-edit {
   display: flex;
-  column-gap: 25px;
+  column-gap: 18px;
   align-items: center;
   position: relative;
 }

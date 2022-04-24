@@ -9,6 +9,12 @@
   }
 }
 
+@media screen and (max-width: 650px) {
+  .profile__author {
+    column-gap: 10px;
+  }
+}
+
 @media screen and (max-width: 570px) {
   .profile__author {
     flex-direction: column;

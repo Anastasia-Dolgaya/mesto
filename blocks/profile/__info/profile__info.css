@@ -3,6 +3,20 @@
   flex-direction: column;
   row-gap: 7px;
   justify-content: center;
+  max-width: 380px;
+  flex: 1;
+}
+
+@media screen and (max-width: 750px) {
+  .profile__info {
+    max-width: 300px;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .profile__info {
+    max-width: 240px;
+  }
 }
 
 @media screen and (max-width: 570px) {
