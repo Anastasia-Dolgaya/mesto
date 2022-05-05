@@ -91,6 +91,10 @@ initialCards.forEach(card => {
     event.target.classList.toggle('element__like-button_active');
   })
 
+  cardElement.querySelector('.element__delete-button').addEventListener('click', function() {
+    cardElement.remove();
+  })
+
   // отображаем на странице
   cardsContainer.append(cardElement);
 })
@@ -113,6 +117,11 @@ function cardAddHandler (event) {
   cardElement.querySelector('.element__like-button').addEventListener('click', function(event) {
     event.target.classList.toggle('element__like-button_active');
   })
+
+  cardElement.querySelector('.element__delete-button').addEventListener('click', function() {
+    cardElement.remove();
+  })
+
   // отображаем на странице
   cardsContainer.prepend(cardElement);
   cardAddPopupClose ()
