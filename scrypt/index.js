@@ -1,8 +1,8 @@
 /*popupProfile*/
 const popupProfile = document.querySelector('.popup_type_profile');
 const popupOpenBtn = document.querySelector('.profile__edit-button');
-const popupCloseBtn = document.querySelector('.popup__close-button_place_profile');
-const profileForm = document.querySelector('.popup__form_type_profile');
+const popupCloseBtn = popupProfile.querySelector('.popup__close-button');
+const profileForm = popupProfile.querySelector('.popup__form');
 const nameInput = document.querySelector('.popup__field_type_name');
 const jobInput = document.querySelector('.popup__field_type_job');
 const profileName = document.querySelector('.profile__name');
@@ -11,8 +11,8 @@ const profileJob = document.querySelector('.profile__job');
 /*popupCard*/
 const popupCard = document.querySelector('.popup_type_card');
 const cardAddBtn = document.querySelector('.profile__add-button');
-const cardAddCloseBtn = document.querySelector('.popup__close-button_place_card');
-const cardForm = document.querySelector('.popup__form_type_card');
+const cardAddCloseBtn = popupCard.querySelector('.popup__close-button');
+const cardForm = popupCard.querySelector('.popup__form');
 const titleInput = document.querySelector('.popup__field_type_title');
 const linkInput = document.querySelector('.popup__field_type_link');
 
@@ -60,7 +60,7 @@ const cardsContainer = document.querySelector('.elements');
 
 /*popupImage */
 const popupImage = document.querySelector('.popup_type_image');
-const imageCloseBtn = document.querySelector('.popup__close-button_place_image');
+const imageCloseBtn = popupImage.querySelector('.popup__close-button');
 
 /*Functions*/
 
@@ -92,15 +92,15 @@ initialCards.forEach(card => {
   cardElement.querySelector('.element__title').textContent = card.name;
 
 
-  cardElement.querySelector('.element__like-button').addEventListener('click', function(event) {
+  cardElement.querySelector('.element__like-button').addEventListener('click', (event) => {
     event.target.classList.toggle('element__like-button_active');
   })
 
-  cardElement.querySelector('.element__delete-button').addEventListener('click', function() {
+  cardElement.querySelector('.element__delete-button').addEventListener('click', () => {
     cardElement.remove();
   })
 
-  cardElement.querySelector('.element__image').addEventListener('click', function() {
+  cardElement.querySelector('.element__image').addEventListener('click', () => {
     popupImage.querySelector('.popup__image').src = card.link;
     popupImage.querySelector('.popup__image').alt = card.description;
     popupImage.querySelector('.popup__caption').textContent = card.name;
@@ -128,15 +128,15 @@ function cardAddHandler (event) {
   popupImage.querySelector('.popup__image').src = linkInput.value;
   popupImage.querySelector('.popup__caption').textContent = titleInput.value;
 
-  cardElement.querySelector('.element__like-button').addEventListener('click', function(event) {
+  cardElement.querySelector('.element__like-button').addEventListener('click', (event) => {
     event.target.classList.toggle('element__like-button_active');
   })
 
-  cardElement.querySelector('.element__delete-button').addEventListener('click', function() {
+  cardElement.querySelector('.element__delete-button').addEventListener('click', () => {
     cardElement.remove();
   })
 
-  cardElement.querySelector('.element__image').addEventListener('click', function() {
+  cardElement.querySelector('.element__image').addEventListener('click', () => {
     popupImage.classList.add('popup_opened');
   })
 
