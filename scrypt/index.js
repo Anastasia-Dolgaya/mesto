@@ -58,6 +58,10 @@ const initialCards = [
 const elementTemplate = document.querySelector('#element').content;
 const cardsContainer = document.querySelector('.elements');
 
+/*popupImage */
+const popupImage = document.querySelector('.popup_type_image');
+const imageCloseBtn = document.querySelector('.popup__close-button_place_image');
+
 /*Functions*/
 
 function popupProfileOpen () {
@@ -87,12 +91,20 @@ initialCards.forEach(card => {
   cardElement.querySelector('.element__image').alt = card.description;
   cardElement.querySelector('.element__title').textContent = card.name;
 
+
   cardElement.querySelector('.element__like-button').addEventListener('click', function(event) {
     event.target.classList.toggle('element__like-button_active');
   })
 
   cardElement.querySelector('.element__delete-button').addEventListener('click', function() {
     cardElement.remove();
+  })
+
+  cardElement.querySelector('.element__image').addEventListener('click', function() {
+    popupImage.querySelector('.popup__image').src = card.link;
+    popupImage.querySelector('.popup__image').alt = card.description;
+    popupImage.querySelector('.popup__caption').textContent = card.name;
+    popupImage.classList.add('popup_opened');
   })
 
   // отображаем на странице
@@ -113,6 +125,8 @@ function cardAddHandler (event) {
   // наполняем содержимым
   cardElement.querySelector('.element__image').src = linkInput.value;
   cardElement.querySelector('.element__title').textContent = titleInput.value;
+  popupImage.querySelector('.popup__image').src = linkInput.value;
+  popupImage.querySelector('.popup__caption').textContent = titleInput.value;
 
   cardElement.querySelector('.element__like-button').addEventListener('click', function(event) {
     event.target.classList.toggle('element__like-button_active');
@@ -122,9 +136,17 @@ function cardAddHandler (event) {
     cardElement.remove();
   })
 
+  cardElement.querySelector('.element__image').addEventListener('click', function() {
+    popupImage.classList.add('popup_opened');
+  })
+
   // отображаем на странице
   cardsContainer.prepend(cardElement);
   cardAddPopupClose ()
+}
+
+function popupImageClose() {
+  popupImage.classList.remove('popup_opened');
 }
 
 popupOpenBtn.addEventListener('click', popupProfileOpen);
@@ -139,4 +161,5 @@ cardAddCloseBtn.addEventListener('click', cardAddPopupClose);
 
 cardForm.addEventListener('submit', cardAddHandler);
 
+imageCloseBtn.addEventListener('click', popupImageClose);
 
