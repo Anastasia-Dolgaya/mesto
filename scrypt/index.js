@@ -87,6 +87,10 @@ initialCards.forEach(card => {
   cardElement.querySelector('.element__image').alt = card.description;
   cardElement.querySelector('.element__title').textContent = card.name;
 
+  cardElement.querySelector('.element__like-button').addEventListener('click', function(event) {
+    event.target.classList.toggle('element__like-button_active');
+  })
+
   // отображаем на странице
   cardsContainer.append(cardElement);
 })
@@ -105,6 +109,10 @@ function cardAddHandler (event) {
   // наполняем содержимым
   cardElement.querySelector('.element__image').src = linkInput.value;
   cardElement.querySelector('.element__title').textContent = titleInput.value;
+
+  cardElement.querySelector('.element__like-button').addEventListener('click', function(event) {
+    event.target.classList.toggle('element__like-button_active');
+  })
   // отображаем на странице
   cardsContainer.prepend(cardElement);
   cardAddPopupClose ()
