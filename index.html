@@ -38,31 +38,77 @@
   </div>
 
   <div class="popup popup_content_profile">
-    <div class="popup__container">
+    <div class="popup__container popup__element">
       <button type="button" class="popup__close-button"></button>
-      <form class="popup__form" name="profile-edit">
+      <form class="popup__form" name="profile-edit" novalidate>
         <h2 class="popup__title">Редактировать профиль</h2>
-        <input type="text" class="popup__field popup__field_type_name" name="name" value="Жак-Ив Кусто" placeholder="Имя">
-        <input type="text" class="popup__field popup__field_type_job" name="job" value="Исследователь океана" placeholder="Призвание">
-        <button type="submit" class="popup__save-button">Сохранить</button>
+        <label class="popup__field">
+          <input
+          type="text"
+          id="name-input"
+          class="popup__input popup__input_type_name"
+          name="name"
+          value="Жак-Ив Кусто"
+          placeholder="Имя"
+          minlength="2"
+          maxlength="40"
+          required>
+        <span class="popup__input-error name-input-error"></span>
+        </label>
+        <label class="popup__field">
+          <input
+            type="text"
+            id="job-input"
+            class="popup__input popup__input_type_job"
+            name="job"
+            value="Исследователь океана"
+            placeholder="О себе"
+            minlength="2"
+            maxlength="200"
+            required>
+          <span class="popup__input-error job-input-error"></span>
+        </label>
+        <button type="submit" class="popup__save-button popup__save-button_inactive">Сохранить</button>
       </form>
     </div>
   </div>
 
   <div class="popup popup_content_card">
-    <div class="popup__container">
+    <div class="popup__container popup__element">
       <button type="button" class="popup__close-button"></button>
-      <form class="popup__form" name="card-adding">
+      <form class="popup__form" name="card-adding" novalidate>
         <h2 class="popup__title">Новое место</h2>
-        <input type="text" class="popup__field popup__field_type_title" name="title" value="" placeholder="Название">
-        <input type="text" class="popup__field popup__field_type_link" name="link" value="" placeholder="Ссылка на картинку">
-        <button type="submit" class="popup__save-button">Создать</button>
+        <label class="popup__field">
+          <input
+            type="text"
+            id="title-input"
+            class="popup__input popup__input_type_title"
+            name="title"
+            value=""
+            placeholder="Название"
+            minlength="2"
+            maxlength="30"
+            required>
+          <span class="popup__input-error title-input-error"></span>
+        </label>
+        <label class="popup__field">
+          <input
+            type="url"
+            id="link-input"
+            class="popup__input popup__input_type_link"
+            name="link"
+            value=""
+            placeholder="Ссылка на картинку"
+            required>
+          <span class="popup__input-error link-input-error"></span>
+        </label>
+        <button type="submit" class="popup__save-button popup__save-button_inactive">Создать</button>
       </form>
     </div>
   </div>
 
   <div class="popup popup_content_image">
-    <div class="popup__box">
+    <div class="popup__box popup__element">
       <button type="button" class="popup__close-button"></button>
       <figure class="popup__image-box">
         <img class="popup__image" src="#" alt="картинка">
@@ -85,5 +131,6 @@
   </template>
 
   <script src="./scrypts/index.js"></script>
+  <script src="./scrypts/validate.js"></script>
 </body>
 </html>

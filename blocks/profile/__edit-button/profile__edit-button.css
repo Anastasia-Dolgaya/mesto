@@ -13,6 +13,7 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: 10px;
+  outline: none;
 }
 
 .profile__edit-button:hover {
