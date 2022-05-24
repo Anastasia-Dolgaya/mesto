@@ -13,3 +13,7 @@
   border: none;
   cursor: pointer;
 }
+
+.element__delete-button:hover {
+  opacity: .6;
+}
