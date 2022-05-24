@@ -150,8 +150,8 @@ initialCards.forEach(card => {
 
 profileOpenBtn.addEventListener('click', () => {
   resetForm(profileForm);
-  nameInput.value = profileName.innerText;
-  jobInput.value = profileJob.innerText;
+  nameInput.value = profileName.textContent;
+  jobInput.value = profileJob.textContent;
   openPopup(profilePopup, config);
   initForm(profilePopup, config, false);
 });
