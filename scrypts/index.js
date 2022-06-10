@@ -1,3 +1,9 @@
+// imports
+import {Card} from './Card.js';
+import { initialCards } from './initialCardsArr.js';
+import { FormValidator } from './FormValidator.js';
+import { config } from './validate.js';
+
 /*profilePopup*/
 const profilePopup = document.querySelector('.popup_content_profile');
 const profileOpenBtn = document.querySelector('.profile__edit-button');
@@ -11,59 +17,18 @@ const profileJob = document.querySelector('.profile__job');
 const cardPopup = document.querySelector('.popup_content_card');
 const cardAddBtn = document.querySelector('.profile__add-button');
 const cardForm = cardPopup.querySelector('.popup__form');
+
+/*cards*/
+const cardsContainer = document.querySelector('.elements');
 const titleInput = document.querySelector('.popup__input_type_title');
 const linkInput = document.querySelector('.popup__input_type_link');
 
-/*cards*/
-const initialCards = [
-  {
-    name: 'Двуглавая сопка',
-    link: './images/dvuglavaya-sopka.jpg',
-    description: 'Осенний горный пейзаж'
-  },
-
-  {
-    name: 'Каменная река',
-    link: './images/kamennaya-reka.jpg',
-    description: 'Каменные глыбы на фоне гор'
-  },
-
-  {
-    name: 'Аракульские шиханы',
-    link: './images/arakul.jpg',
-    description: 'Отвесные скалы на фоне зеленого леса'
-  },
-
-  {
-    name: 'Коркинский разрез',
-    link: './images/korkino.jpg',
-    description: 'Огромный карьер с сетью дорог'
-  },
-
-  {
-    name: 'Озеро Тургояк',
-    link: './images/turgoyak.jpg',
-    description: 'Мелкая рябь на озере с ледовой коркой'
-  },
-
-  {
-    name: 'Таганай',
-    link: './images/taganai.jpg',
-    description: 'Скамейка на краю обрыва на фоне гор'
-  },
-]
-
-const elementTemplate = document.querySelector('#element').content;
-const cardsContainer = document.querySelector('.elements');
-
 /*imagePopup */
 const imagePopup = document.querySelector('.popup_content_image');
-const largeImage = imagePopup.querySelector('.popup__image');
-const imageCaption = imagePopup.querySelector('.popup__caption');
 
 /*functions*/
 
-function openPopup(popup, parameters) {
+function openPopup(popup) {
   popup.classList.add('popup_opened');
   document.addEventListener('keydown', handleEscPopupClose);
 };
@@ -80,54 +45,13 @@ function handleEscPopupClose(event) {
   };
 }
 
+export {openPopup, closePopup, imagePopup};
+
 function handleProfileEditForm(event) {
   event.preventDefault();
   profileName.textContent = nameInput.value;
   profileJob.textContent = jobInput.value;
   closePopup(profilePopup);
-}
-
-function toggleLike(event) {
-  event.target.classList.toggle('element__like-button_active');
-}
-
-function handleDelete(event) {
-  event.target.closest('.element').remove();
-}
-
-function handleImagePopup(name, imgLink, imgAlt) {
-  largeImage.src = imgLink;
-  largeImage.alt = imgAlt;
-  imageCaption.textContent = name;
-  openPopup(imagePopup, config);
-}
-
-function cloneAndInitCard(name, imgLink, imgAlt) {
-  // clone
-  const cardElement = elementTemplate.querySelector('.element').cloneNode(true);
-
-  // add content
-  const cardImage = cardElement.querySelector('.element__image');
-  cardImage.src = imgLink;
-  cardImage.alt = imgAlt;
-  cardElement.querySelector('.element__title').textContent = name;
-
-  //like button
-  cardElement.querySelector('.element__like-button').addEventListener('click', toggleLike);
-
-  //delete button
-  cardElement.querySelector('.element__delete-button').addEventListener('click', handleDelete);
-
-  //image popup
-  cardImage.addEventListener('click', () => handleImagePopup(name, imgLink, imgAlt));
-  return cardElement;
-}
-
-function handleCardAddForm(event) {
-  event.preventDefault();
-  const cardElement = cloneAndInitCard(titleInput.value, linkInput.value, '');
-  cardsContainer.prepend(cardElement);
-  closePopup(cardPopup);
 }
 
 function resetForm(form) {
@@ -143,29 +67,49 @@ function resetForm(form) {
   });
 };
 
-initialCards.forEach(card => {
-  const cardElement = cloneAndInitCard(card.name, card.link, card.description);
+// Create and add new card by form submit
+
+function handleCardAddForm(event) {
+  event.preventDefault();
+  const newCard = {
+    link: linkInput.value,
+    name: titleInput.value,
+    description: ''
+  };
+  const card = new Card(newCard, '#element');
+  const cardElement = card.generateCard();
+  cardsContainer.prepend(cardElement);
+  closePopup(cardPopup);
+}
+
+// Create and add initial cards
+
+initialCards.forEach((item) => {
+  const card = new Card(item, '#element');
+  const cardElement = card.generateCard();
   cardsContainer.append(cardElement);
 });
+
+// EventListeners
 
 profileOpenBtn.addEventListener('click', () => {
   resetForm(profileForm);
   nameInput.value = profileName.textContent;
   jobInput.value = profileJob.textContent;
-  openPopup(profilePopup, config);
-  initForm(profilePopup, config, false);
+  openPopup(profilePopup);
+  // initForm(profilePopup, config, false);
 });
 
 profileForm.addEventListener('submit', handleProfileEditForm);
 
 cardAddBtn.addEventListener('click', () => {
   resetForm(cardForm);
-  openPopup(cardPopup, config);
-  initForm(cardPopup, config, false);
+  openPopup(cardPopup);
+  // initForm(cardPopup, config, false);
 });
 
 cardForm.addEventListener('submit', (event) => {
-  handleCardAddForm(event);v
+  handleCardAddForm(event);
 });
 
 profilePopup.addEventListener('click', (event) => {
@@ -180,8 +124,3 @@ cardPopup.addEventListener('click', (event) => {
   }
 });
 
-imagePopup.addEventListener('click', (event) => {
-  if (event.target.classList.contains('popup') || event.target.classList.contains('popup__close-button')) {
-    closePopup(imagePopup);
-  }
-});
