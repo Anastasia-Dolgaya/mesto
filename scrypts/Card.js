@@ -6,9 +6,6 @@ export class Card {
     this._name = data.name;
     this._description = data.description;
     this._templateSelector = templateSelector;
-    openPopup;
-    closePopup;
-    imagePopup;
   }
 
   _getTemplate() {

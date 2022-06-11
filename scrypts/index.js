@@ -2,7 +2,7 @@
 import {Card} from './Card.js';
 import { initialCards } from './initialCardsArr.js';
 import { FormValidator } from './FormValidator.js';
-import { config } from './validate.js';
+import { config } from './config.js';
 
 /*profilePopup*/
 const profilePopup = document.querySelector('.popup_content_profile');
@@ -44,8 +44,6 @@ function handleEscPopupClose(event) {
     closePopup(popupActive);
   };
 }
-
-export {openPopup, closePopup, imagePopup};
 
 function handleProfileEditForm(event) {
   event.preventDefault();
@@ -94,18 +92,20 @@ initialCards.forEach((item) => {
 
 profileOpenBtn.addEventListener('click', () => {
   resetForm(profileForm);
+  const profileValidator = new FormValidator(config, profileForm);
+  profileValidator.enableValidation();
   nameInput.value = profileName.textContent;
   jobInput.value = profileJob.textContent;
   openPopup(profilePopup);
-  // initForm(profilePopup, config, false);
 });
 
 profileForm.addEventListener('submit', handleProfileEditForm);
 
 cardAddBtn.addEventListener('click', () => {
   resetForm(cardForm);
+  const cardAddValidator = new FormValidator(config, cardForm);
+  cardAddValidator.enableValidation();
   openPopup(cardPopup);
-  // initForm(cardPopup, config, false);
 });
 
 cardForm.addEventListener('submit', (event) => {
@@ -124,3 +124,4 @@ cardPopup.addEventListener('click', (event) => {
   }
 });
 
+export {openPopup, closePopup, imagePopup};
