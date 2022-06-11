@@ -40,10 +40,13 @@ export class FormValidator {
     }
   };
 
-  _initForm () {
+  initForm (addListeners) {
     const inputList = Array.from(this._formElement.querySelectorAll(this._parameters.inputSelector));
     const buttonElement = this._formElement.querySelector(this._parameters.submitButtonSelector);
     this._toggleButtonState(inputList, buttonElement);
+
+    if (!addListeners) {
+      return }
 
     inputList.forEach((inputElement) => {
       inputElement.addEventListener('input', () => {
@@ -53,11 +56,24 @@ export class FormValidator {
     });
   };
 
+  resetForm() {
+    this._formElement.reset();
+    const inputsArr = Array.from(this._formElement.querySelectorAll('.popup__input'));
+    inputsArr.forEach((input) => {
+      input.classList.remove('popup__input_invalid');
+    });
+    const errorsArr = Array.from(this._formElement.querySelectorAll('.popup__input-error'));
+    errorsArr.forEach((error) => {
+      error.classList.remove('popup__input-error_active');
+      error.textContent = '';
+    });
+  };
+
   enableValidation() {
     this._formElement.addEventListener('submit', (evt) => {
       evt.preventDefault();
     });
 
-    this._initForm();
+    this.initForm(true);
   };
 }

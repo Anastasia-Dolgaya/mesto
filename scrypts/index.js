@@ -1,8 +1,9 @@
 // imports
-import {Card} from './Card.js';
+import { Card } from './Card.js';
 import { initialCards } from './initialCardsArr.js';
 import { FormValidator } from './FormValidator.js';
 import { config } from './config.js';
+import { openPopup, closePopup, handleOverlayAndBtnPopupClose } from './utils/utils.js';
 
 /*profilePopup*/
 const profilePopup = document.querySelector('.popup_content_profile');
@@ -23,27 +24,11 @@ const cardsContainer = document.querySelector('.elements');
 const titleInput = document.querySelector('.popup__input_type_title');
 const linkInput = document.querySelector('.popup__input_type_link');
 
-/*imagePopup */
-const imagePopup = document.querySelector('.popup_content_image');
+// FormValidators
+const profileValidator = new FormValidator(config, profileForm);
+const cardAddValidator = new FormValidator(config, cardForm);
 
 /*functions*/
-
-function openPopup(popup) {
-  popup.classList.add('popup_opened');
-  document.addEventListener('keydown', handleEscPopupClose);
-};
-
-function closePopup(popup) {
-  popup.classList.remove('popup_opened');
-  document.removeEventListener('keydown', handleEscPopupClose);
-}
-
-function handleEscPopupClose(event) {
-  const popupActive = document.querySelector('.popup_opened');
-  if (event.key === 'Escape') {
-    closePopup(popupActive);
-  };
-}
 
 function handleProfileEditForm(event) {
   event.preventDefault();
@@ -52,18 +37,10 @@ function handleProfileEditForm(event) {
   closePopup(profilePopup);
 }
 
-function resetForm(form) {
-  form.reset();
-  const inputsArr = Array.from(form.querySelectorAll('.popup__input'));
-  inputsArr.forEach((input) => {
-    input.classList.remove('popup__input_invalid');
-  });
-  const errorsArr = Array.from(form.querySelectorAll('.popup__input-error'));
-  errorsArr.forEach((error) => {
-    error.classList.remove('popup__input-error_active');
-    error.textContent = '';
-  });
-};
+function createCard(origin) {
+  const card = new Card(origin, '#element');
+  return card;
+}
 
 // Create and add new card by form submit
 
@@ -74,7 +51,7 @@ function handleCardAddForm(event) {
     name: titleInput.value,
     description: ''
   };
-  const card = new Card(newCard, '#element');
+  const card = createCard(newCard);
   const cardElement = card.generateCard();
   cardsContainer.prepend(cardElement);
   closePopup(cardPopup);
@@ -83,7 +60,7 @@ function handleCardAddForm(event) {
 // Create and add initial cards
 
 initialCards.forEach((item) => {
-  const card = new Card(item, '#element');
+  const card = createCard(item);
   const cardElement = card.generateCard();
   cardsContainer.append(cardElement);
 });
@@ -91,9 +68,7 @@ initialCards.forEach((item) => {
 // EventListeners
 
 profileOpenBtn.addEventListener('click', () => {
-  resetForm(profileForm);
-  const profileValidator = new FormValidator(config, profileForm);
-  profileValidator.enableValidation();
+  profileValidator.resetForm();
   nameInput.value = profileName.textContent;
   jobInput.value = profileJob.textContent;
   openPopup(profilePopup);
@@ -102,9 +77,8 @@ profileOpenBtn.addEventListener('click', () => {
 profileForm.addEventListener('submit', handleProfileEditForm);
 
 cardAddBtn.addEventListener('click', () => {
-  resetForm(cardForm);
-  const cardAddValidator = new FormValidator(config, cardForm);
-  cardAddValidator.enableValidation();
+  cardAddValidator.resetForm();
+  cardAddValidator.initForm(false);
   openPopup(cardPopup);
 });
 
@@ -113,15 +87,12 @@ cardForm.addEventListener('submit', (event) => {
 });
 
 profilePopup.addEventListener('click', (event) => {
-  if (event.target.classList.contains('popup') || event.target.classList.contains('popup__close-button')) {
-    closePopup(profilePopup);
-  }
+  handleOverlayAndBtnPopupClose(event, profilePopup);
 });
 
 cardPopup.addEventListener('click', (event) => {
-  if (event.target.classList.contains('popup') || event.target.classList.contains('popup__close-button')) {
-    closePopup(cardPopup);
-  }
+  handleOverlayAndBtnPopupClose(event, cardPopup);
 });
 
-export {openPopup, closePopup, imagePopup};
+profileValidator.enableValidation();
+cardAddValidator.enableValidation();

@@ -1,4 +1,5 @@
-import { openPopup, closePopup, imagePopup } from "./index.js";
+import { imagePopup, largeImage, imageCaption } from "./utils/constants.js";
+import { openPopup, closePopup, handleOverlayAndBtnPopupClose } from "./utils/utils.js";
 
 export class Card {
   constructor(data, templateSelector) {
@@ -40,8 +41,6 @@ export class Card {
   }
 
   _handleImagePopup() {
-    const largeImage = imagePopup.querySelector('.popup__image');
-    const imageCaption = imagePopup.querySelector('.popup__caption');
     largeImage.src = this._link;
     largeImage.alt = this._description;
     imageCaption.textContent = this._name;
@@ -65,9 +64,7 @@ export class Card {
     });
 
     imagePopup.addEventListener('click', (event) => {
-      if (event.target.classList.contains('popup') || event.target.classList.contains('popup__close-button')) {
-        closePopup(imagePopup);
-      }
+      handleOverlayAndBtnPopupClose(event, imagePopup);
     });
   }
 }
