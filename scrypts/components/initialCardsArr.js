@@ -1,36 +1,36 @@
 export const initialCards = [
   {
-    name: 'Двуглавая сопка',
+    title: 'Двуглавая сопка',
     link: './images/dvuglavaya-sopka.jpg',
     description: 'Осенний горный пейзаж'
   },
 
   {
-    name: 'Каменная река',
+    title: 'Каменная река',
     link: './images/kamennaya-reka.jpg',
     description: 'Каменные глыбы на фоне гор'
   },
 
   {
-    name: 'Аракульские шиханы',
+    title: 'Аракульские шиханы',
     link: './images/arakul.jpg',
     description: 'Отвесные скалы на фоне зеленого леса'
   },
 
   {
-    name: 'Коркинский разрез',
+    title: 'Коркинский разрез',
     link: './images/korkino.jpg',
     description: 'Огромный карьер с сетью дорог'
   },
 
   {
-    name: 'Озеро Тургояк',
+    title: 'Озеро Тургояк',
     link: './images/turgoyak.jpg',
     description: 'Мелкая рябь на озере с ледовой коркой'
   },
 
   {
-    name: 'Таганай',
+    title: 'Таганай',
     link: './images/taganai.jpg',
     description: 'Скамейка на краю обрыва на фоне гор'
   },

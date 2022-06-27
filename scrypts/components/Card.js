@@ -1,11 +1,7 @@
-import { imagePopup, largeImage, imageCaption } from "./utils/constants.js";
-import { openPopup, closePopup, handleOverlayAndBtnPopupClose } from "./utils/utils.js";
-
 export class Card {
-  constructor(data, templateSelector) {
-    this._link = data.link;
-    this._name = data.name;
-    this._description = data.description;
+  constructor(data, templateSelector, handleCardClick) {
+    this._data = data;
+    this._handleCardClick = handleCardClick;
     this._templateSelector = templateSelector;
   }
 
@@ -25,9 +21,9 @@ export class Card {
     this._image = this._element.querySelector('.element__image');
     this._setEventListeners();
 
-    this._image.src = this._link;
-    this._image.alt = this._description;
-    this._element.querySelector('.element__title').textContent = this._name;
+    this._image.src = this._data.link;
+    this._image.alt = this._data.description;
+    this._element.querySelector('.element__title').textContent = this._data.title;
 
     return this._element;
   }
@@ -38,13 +34,6 @@ export class Card {
 
   _handleDelete() {
     this._element.remove();
-  }
-
-  _handleImagePopup() {
-    largeImage.src = this._link;
-    largeImage.alt = this._description;
-    imageCaption.textContent = this._name;
-    openPopup(imagePopup);
   }
 
   _setEventListeners() {
@@ -60,11 +49,7 @@ export class Card {
 
     //image popup
     this._image.addEventListener('click', () => {
-      this._handleImagePopup();
-    });
-
-    imagePopup.addEventListener('click', (event) => {
-      handleOverlayAndBtnPopupClose(event, imagePopup);
+      this._handleCardClick(this._data);
     });
   }
 }

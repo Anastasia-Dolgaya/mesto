@@ -1,5 +1,4 @@
-const imagePopup = document.querySelector('.popup_content_image');
-const largeImage = imagePopup.querySelector('.popup__image');
-const imageCaption = imagePopup.querySelector('.popup__caption');
+const profileOpenBtn = document.querySelector('.profile__edit-button');
+const cardAddBtn = document.querySelector('.profile__add-button');
 
-export {imagePopup, largeImage, imageCaption};
+export { profileOpenBtn, cardAddBtn };
