@@ -1,13 +1,14 @@
 // imports
-import { Card } from '../components/Card.js';
 import { initialCards } from '../components/initialCardsArr.js';
-import { FormValidator } from '../components/FormValidator.js';
 import { config } from '../components/config.js';
+import { Card } from '../components/Card.js';
+import { FormValidator } from '../components/FormValidator.js';
 import { Section } from '../components/Section.js';
 import { PopupWithForm } from '../components/PopupWithForm.js';
 import { PopupWithImage } from '../components/PopupWithImage.js';
 import { UserInfo } from '../components/UserInfo.js';
 import { profileOpenBtn, cardAddBtn } from '../utils/constants.js';
+import '../../pages/index.css';
 
 // попап с картинкой
 const imagePopup = new PopupWithImage('.popup_content_image');
