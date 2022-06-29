@@ -2,6 +2,7 @@ export class FormValidator {
   constructor(parameters, form) {
     this._formElement = form;
     this._parameters = parameters;
+    this._inputList = Array.from(this._formElement.querySelectorAll(this._parameters.inputSelector));
   }
 
   _showInputError (inputElement, errorMessage) {
@@ -26,46 +27,41 @@ export class FormValidator {
     }
   };
 
-  _hasInvalidInput (inputList) {
-    return inputList.some((inputElement) => {
+  _hasInvalidInput () {
+    return this._inputList.some((inputElement) => {
       return !inputElement.validity.valid;
     })
   };
 
-  _toggleButtonState (inputList, buttonElement) {
-    if (this._hasInvalidInput(inputList)) {
+  _toggleButtonState (buttonElement) {
+    if (this._hasInvalidInput(this._inputList)) {
       buttonElement.classList.add(this._parameters.inactiveButtonClass);
+      buttonElement.disabled = true;
     } else {
       buttonElement.classList.remove(this._parameters.inactiveButtonClass);
+      buttonElement.disabled = false;
     }
   };
 
   initForm (addListeners) {
-    const inputList = Array.from(this._formElement.querySelectorAll(this._parameters.inputSelector));
     const buttonElement = this._formElement.querySelector(this._parameters.submitButtonSelector);
-    this._toggleButtonState(inputList, buttonElement);
+    this._toggleButtonState(buttonElement);
 
     if (!addListeners) {
       return }
 
-    inputList.forEach((inputElement) => {
+      this._inputList.forEach((inputElement) => {
       inputElement.addEventListener('input', () => {
         this._isValid(inputElement)
-        this._toggleButtonState(inputList, buttonElement);
+        this._toggleButtonState(buttonElement);
       });
     });
   };
 
   resetForm() {
     this._formElement.reset();
-    const inputsArr = Array.from(this._formElement.querySelectorAll('.popup__input'));
-    inputsArr.forEach((input) => {
-      input.classList.remove('popup__input_invalid');
-    });
-    const errorsArr = Array.from(this._formElement.querySelectorAll('.popup__input-error'));
-    errorsArr.forEach((error) => {
-      error.classList.remove('popup__input-error_active');
-      error.textContent = '';
+    this._inputList.forEach((input) => {
+      this._hideInputError(input);
     });
   };
 

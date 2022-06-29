@@ -5,7 +5,6 @@ import korkinoImage from '../../images/korkino.jpg';
 import turgoyakImage from '../../images/turgoyak.jpg'
 import taganayImage from '../../images/taganai.jpg';
 
-
 export const initialCards = [
   {
     title: 'Двуглавая сопка',
