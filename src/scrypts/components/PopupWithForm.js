@@ -4,7 +4,6 @@ export class PopupWithForm extends Popup {
   constructor({ popupSelector, handleFormSubmit }) {
     super(popupSelector);
     this._handleFormSubmit = handleFormSubmit;
-    // переменная используется для валидации форм в index.js
     this.form = this._popup.querySelector('.popup__form');
     this._inputList = this.form.querySelectorAll('.popup__input');
   }
