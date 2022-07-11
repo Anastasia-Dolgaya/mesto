@@ -15,20 +15,13 @@ import './index.css';
 const api = new Api(apiConfig);
 
 // данные профиля
-const profileInfo = new UserInfo({
+const userInfo = new UserInfo({
   infoSelector: {
     name: '.profile__name',
     about: '.profile__job',
     avatar: '.profile__avatar'
   }
 }, api)
-
-// заполняем данные профиля с сервера при загрузке сайта
-profileInfo.getUserInfo()
-.then(data => {
-  profileInfo.setUserInfo(data);
-  profileInfo.setUserAvatar(data);
-  })
 
 // попап изменения аватара
 const avatarPopup = new PopupWithForm({
@@ -37,7 +30,7 @@ const avatarPopup = new PopupWithForm({
     avatarPopup.renderLoading(true);
     api.updateUserAvatar(data)
     .then((res) => {
-      profileInfo.setUserAvatar(res);
+      userInfo.setUserAvatar(res);
       avatarPopup.close();
     })
     .catch(err => console.log(`Ошибка: ${err}`))
@@ -50,8 +43,10 @@ const avatarPopup = new PopupWithForm({
 // попап с картинкой
 const imagePopup = new PopupWithImage('.popup_content_image');
 
+// создаем карточки
 const createCard = (origin) => {
-  const card = new Card (origin, '#element', ()=>imagePopup.open(origin));
+  const userId = userInfo.getUserID();
+  const card = new Card (origin, '#element', ()=>imagePopup.open(origin), userId, api);
   const cardElement = card.generateCard();
   return cardElement;
 }
@@ -63,7 +58,7 @@ const profilePopup = new PopupWithForm ({
     profilePopup.renderLoading(true);
     api.updateUserData(data)
     .then(res => {
-      profileInfo.setUserInfo(res);
+      userInfo.setUserInfo(res);
       profilePopup.close();
     })
     .catch(err => console.log(`Ошибка: ${err}`))
@@ -80,10 +75,9 @@ const cardsList = new Section ({
   },
   '.elements');
 
-// отрисовываем карточки с сервера
-Promise.all([api.getInitialCards(), api.getUserData()])
-  .then(([cardsData, userData]) => {
-    // userId = userData._id;
+// сихнронизируем информацию профиля и отрисовываем карточки с сервера
+Promise.all([api.getInitialCards(), userInfo.syncUserInfo()])
+  .then(([cardsData]) => {
     cardsList.renderItems(cardsData);
   })
   .catch(err => console.log(`Ошибка: ${err}`))
@@ -92,20 +86,18 @@ Promise.all([api.getInitialCards(), api.getUserData()])
 const cardAddPopup = new PopupWithForm({
   popupSelector: '.popup_content_card',
   handleFormSubmit: (formData) => {
-    profilePopup.renderLoading(true);
+    cardAddPopup.renderLoading(true);
     api.addNewCard(formData)
     .then(res => {
-      const cardElement = createCard(res);
-      cardsList.addItem(cardElement);
+      cardsList.addItem(res);
       cardAddPopup.close();
-      cardsList.renderItems()
     })
     .catch(err => console.log(`Ошибка: ${err}`))
+    .finally(() => {
+      cardAddPopup.renderLoading(false);
+    })
   }
 });
-
-// // рендерим карточки
-// cardsList.renderItems();
 
 // валидация форм
 const profileValidator = new FormValidator(config, profilePopup.form);
@@ -131,7 +123,7 @@ const openCardAddPopup = () => {
 const openProfilePopup = () => {
   profileValidator.resetForm();
   profileValidator.initForm(false);
-  profileInfo.getUserInfo()
+  userInfo.getUserInfo()
   .then(obj => {
     profilePopup.form.querySelector('.popup__input_type_name').value = obj.name;
     profilePopup.form.querySelector('.popup__input_type_about').value = obj.about;

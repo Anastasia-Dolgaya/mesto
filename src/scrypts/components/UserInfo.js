@@ -7,11 +7,25 @@ export class UserInfo {
     this._api = api;
   }
 
-  getUserInfo() {
-    return this._api.getUserData()
+  syncUserInfo() {
+    return this.getUserInfo()
+    .then((data) => {
+      this._data = data;
+      this._setUserInfo(data);
+      this._setUserAvatar(data);
+      return this._data;
+    })
   }
 
-  setUserInfo(obj) {
+  getUserID() {
+    return this._data._id;
+  }
+
+  getUserInfo() {
+    return this._api.getUserData();
+  }
+
+  _setUserInfo(obj) {
     if (obj.name) {
       this._name.textContent = obj.name;
     }
@@ -20,9 +34,8 @@ export class UserInfo {
     }
   }
 
-  setUserAvatar(obj) {
+  _setUserAvatar(obj) {
     if (obj.avatar) {
-      console.log(this._avatar, obj);
       this._avatar.src = obj.avatar;
     }
   }
