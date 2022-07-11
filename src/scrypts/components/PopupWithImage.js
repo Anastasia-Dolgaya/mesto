@@ -9,9 +9,8 @@ export class PopupWithImage extends Popup {
 
   open(data) {
     this._image.src = data.link;
-    // description указан для массива начальных карточек
-    this._image.alt = data.description ? data.description : data.title;
-    this._caption.textContent = data.title;
+    this._image.alt = data.description ? data.description : data.name;
+    this._caption.textContent = data.name;
     super.open();
   }
 }

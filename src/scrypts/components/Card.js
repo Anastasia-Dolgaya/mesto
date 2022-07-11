@@ -23,7 +23,7 @@ export class Card {
 
     this._image.src = this._data.link;
     this._image.alt = this._data.description;
-    this._element.querySelector('.element__title').textContent = this._data.title;
+    this._element.querySelector('.element__title').textContent = this._data.name;
 
     return this._element;
   }

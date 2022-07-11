@@ -1,19 +1,29 @@
 export class UserInfo {
-  constructor({infoSelector}) {
+  constructor({infoSelector}, api) {
     this._info = infoSelector;
     this._name = document.querySelector(this._info.name);
-    this._job = document.querySelector(this._info.job);
+    this._about = document.querySelector(this._info.about);
+    this._avatar = document.querySelector(this._info.avatar)
+    this._api = api;
   }
 
   getUserInfo() {
-    this._userData = {};
-    this._userData.name = this._name.textContent;
-    this._userData.job = this._job.textContent;
-    return this._userData;
+    return this._api.getUserData()
   }
 
-  setUserInfo(formData) {
-    this._name.textContent = formData.name;
-    this._job.textContent = formData.job;
+  setUserInfo(obj) {
+    if (obj.name) {
+      this._name.textContent = obj.name;
+    }
+    if (obj.about) {
+      this._about.textContent = obj.about;
+    }
+  }
+
+  setUserAvatar(obj) {
+    if (obj.avatar) {
+      console.log(this._avatar, obj);
+      this._avatar.src = obj.avatar;
+    }
   }
 }

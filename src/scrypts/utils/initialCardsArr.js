@@ -7,37 +7,37 @@ import taganayImage from '../../images/taganai.jpg';
 
 export const initialCards = [
   {
-    title: 'Двуглавая сопка',
+    name: 'Двуглавая сопка',
     link: sopkaImage,
     description: 'Осенний горный пейзаж'
   },
 
   {
-    title: 'Каменная река',
+    name: 'Каменная река',
     link: riverImage,
     description: 'Каменные глыбы на фоне гор'
   },
 
   {
-    title: 'Аракульские шиханы',
+    name: 'Аракульские шиханы',
     link: arakulImage,
     description: 'Отвесные скалы на фоне зеленого леса'
   },
 
   {
-    title: 'Коркинский разрез',
+    name: 'Коркинский разрез',
     link: korkinoImage,
     description: 'Огромный карьер с сетью дорог'
   },
 
   {
-    title: 'Озеро Тургояк',
+    name: 'Озеро Тургояк',
     link: turgoyakImage,
     description: 'Мелкая рябь на озере с ледовой коркой'
   },
 
   {
-    title: 'Таганай',
+    name: 'Таганай',
     link: taganayImage,
     description: 'Скамейка на краю обрыва на фоне гор'
   },
