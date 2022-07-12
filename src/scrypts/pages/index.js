@@ -1,5 +1,4 @@
 // imports
-import { initialCards } from '../utils/initialCardsArr.js';
 import { config } from '../utils/config.js';
 import { Card } from '../components/Card.js';
 import { FormValidator } from '../components/FormValidator.js';
@@ -24,49 +23,6 @@ const userInfo = new UserInfo({
   }
 }, api)
 
-// попап изменения аватара
-const avatarPopup = new PopupWithForm({
-  popupSelector: '.popup_content_avatar',
-  handleFormSubmit: (data) => {
-    avatarPopup.renderLoading(true);
-    api.updateUserAvatar(data)
-    .then((res) => {
-      userInfo.setUserAvatar(res);
-      avatarPopup.close();
-    })
-    .catch(err => console.log(`Ошибка: ${err}`))
-    .finally(() => {
-      avatarPopup.renderLoading(false);
-    })
-  }
-})
-
-// попап с картинкой
-const imagePopup = new PopupWithImage('.popup_content_image');
-
-// попап подтверждения удаления карточки
-const deleteConfirmPopup = new PopupWithText ({
-  popupSelector: '.popup_content_confirmation',
-  handleFormSubmit: (cardId) => {
-    const card = document.getElementById(cardId);
-    api.deleteCard(cardId)
-    .then(() => {
-      deleteConfirmPopup.close();
-      card.remove();
-      card = null;
-    })
-    .catch(err => console.log(`Ошибка: ${err}`))
-  }
-})
-
-// создаем карточки
-const createCard = (origin) => {
-  const userId = userInfo.getUserID();
-  const card = new Card (origin, '#element', ()=>imagePopup.open(origin), userId, api, ()=>deleteConfirmPopup.open(origin));
-  const cardElement = card.generateCard();
-  return cardElement;
-}
-
 // попап с редактированием данных профиля
 const profilePopup = new PopupWithForm ({
   popupSelector: '.popup_content_profile',
@@ -84,6 +40,49 @@ const profilePopup = new PopupWithForm ({
   }
 });
 
+// попап изменения аватара
+const avatarPopup = new PopupWithForm({
+  popupSelector: '.popup_content_avatar',
+  handleFormSubmit: (data) => {
+    avatarPopup.renderLoading(true);
+    api.updateUserAvatar(data)
+      .then((res) => {
+        userInfo.setUserAvatar(res);
+        avatarPopup.close();
+      })
+      .catch(err => console.log(`Ошибка: ${err}`))
+      .finally(() => {
+        avatarPopup.renderLoading(false);
+      })
+  }
+})
+
+// попап с картинкой
+const imagePopup = new PopupWithImage('.popup_content_image');
+
+// попап подтверждения удаления карточки
+const deleteConfirmPopup = new PopupWithText ({
+  popupSelector: '.popup_content_confirmation',
+  handleFormSubmit: (cardId) => {
+    const card = document.getElementById(cardId);
+    api.deleteCard(cardId)
+      .then(() => {
+        deleteConfirmPopup.close();
+        card.remove();
+      })
+      .catch(err => console.log(`Ошибка: ${err}`))
+  }
+})
+
+// создаем карточки
+const createCard = (origin) => {
+  const userId = userInfo.getUserID();
+  const card = new Card (origin, '#element', ()=>imagePopup.open(origin), userId, api, ()=>deleteConfirmPopup.open(origin));
+  const cardElement = card.generateCard();
+  return cardElement;
+}
+
+// создаем секцию
 const cardsList = new Section ({
   renderer: (item) => {
     return createCard(item);
@@ -92,7 +91,7 @@ const cardsList = new Section ({
   '.elements');
 
 // сихнронизируем информацию профиля и отрисовываем карточки с сервера
-Promise.all([api.getInitialCards(), userInfo.syncUserInfo()])
+Promise.all([api.fetchInitialCards(), userInfo.syncUserInfo()])
   .then(([cardsData]) => {
     cardsList.renderItems(cardsData);
   })
@@ -104,18 +103,16 @@ const cardAddPopup = new PopupWithForm({
   handleFormSubmit: (formData) => {
     cardAddPopup.renderLoading(true);
     api.addNewCard(formData)
-    .then(res => {
-      cardsList.addItem(res);
-      cardAddPopup.close();
-    })
-    .catch(err => console.log(`Ошибка: ${err}`))
-    .finally(() => {
-      cardAddPopup.renderLoading(false);
-    })
+      .then(res => {
+        cardsList.addItem(res);
+        cardAddPopup.close();
+      })
+      .catch(err => console.log(`Ошибка: ${err}`))
+      .finally(() => {
+        cardAddPopup.renderLoading(false);
+      })
   }
 });
-
-
 
 // валидация форм
 const profileValidator = new FormValidator(config, profilePopup.form);
@@ -143,12 +140,12 @@ const openProfilePopup = () => {
   profileValidator.resetForm();
   profileValidator.initForm(false);
   userInfo.getUserInfo()
-  .then(obj => {
-    profilePopup.form.querySelector('.popup__input_type_name').value = obj.name;
-    profilePopup.form.querySelector('.popup__input_type_about').value = obj.about;
-    profilePopup.open();
-  })
-  .catch(err => console.log(`Ошибка: ${err}`))
+    .then(obj => {
+      profilePopup.form.querySelector('.popup__input_type_name').value = obj.name;
+      profilePopup.form.querySelector('.popup__input_type_about').value = obj.about;
+      profilePopup.open();
+    })
+    .catch(err => console.log(`Ошибка: ${err}`))
 }
 
 const openAvatarPopup = () => {

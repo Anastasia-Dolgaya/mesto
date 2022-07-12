@@ -9,12 +9,13 @@ export class UserInfo {
 
   syncUserInfo() {
     return this.getUserInfo()
-    .then((data) => {
-      this._data = data;
-      this._setUserInfo(data);
-      this._setUserAvatar(data);
-      return this._data;
-    })
+      .then((data) => {
+        this._data = data;
+        this.setUserInfo(data);
+        this.setUserAvatar(data);
+        return this._data;
+      })
+      .catch(err => console.log(`Ошибка: ${err}`))
   }
 
   getUserID() {
@@ -22,10 +23,10 @@ export class UserInfo {
   }
 
   getUserInfo() {
-    return this._api.getUserData();
+    return this._api.fetchUserData();
   }
 
-  _setUserInfo(obj) {
+  setUserInfo(obj) {
     if (obj.name) {
       this._name.textContent = obj.name;
     }
@@ -34,7 +35,7 @@ export class UserInfo {
     }
   }
 
-  _setUserAvatar(obj) {
+  setUserAvatar(obj) {
     if (obj.avatar) {
       this._avatar.src = obj.avatar;
     }

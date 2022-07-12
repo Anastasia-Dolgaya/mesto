@@ -22,6 +22,7 @@ export class Card {
 
   generateCard() {
     this._element = this._getTemplate();
+
     this._deleteBtn = this._element.querySelector('.element__delete-button');
     if (this._cardOwnerId === this._userId) {
       this._deleteBtn.addEventListener('click', () => {
@@ -30,7 +31,9 @@ export class Card {
     } else {
       this._deleteBtn.remove();
     };
+
     this._likeBtn = this._element.querySelector('.element__like-button');
+    this._likeNumber = this._element.querySelector('.element__like-number');
     this._image = this._element.querySelector('.element__image');
     this._setEventListeners();
 
@@ -38,18 +41,44 @@ export class Card {
     this._image.alt = this._data.description;
     this._element.querySelector('.element__title').textContent = this._data.name;
     this._element.setAttribute('id', this._cardId);
+    this._renderLike(this._data);
 
     return this._element;
   }
 
-  _toggleLike() {
-    this._likeBtn.classList.toggle('element__like-button_active');
+  isLiked(data) {
+    return (data.likes.find(item => item._id === this._userId));
+  }
+
+  _renderLike(data) {
+    if (this.isLiked(data)) {
+      this._likeBtn.classList.add('element__like-button_active');
+    } else {
+      this._likeBtn.classList.remove('element__like-button_active');
+    }
+    this._likeNumber.textContent = data.likes.length;
+  }
+
+  _updateLike() {
+    if (this._likeBtn.classList.contains('element__like-button_active')) {
+      this._api.handleLikes(this._cardId, true)
+        .then(data => {
+          this._renderLike(data);
+        })
+        .catch(err => console.log(`Ошибка: ${err}`))
+    } else {
+      this._api.handleLikes(this._cardId, false)
+        .then(data => {
+          this._renderLike(data);
+        })
+        .catch(err => console.log(`Ошибка: ${err}`))
+    }
   }
 
   _setEventListeners() {
     //like button
     this._likeBtn.addEventListener('click', () => {
-      this._toggleLike();
+      this._updateLike();
     });
 
     //image popup
