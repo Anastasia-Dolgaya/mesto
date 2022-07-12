@@ -90,4 +90,30 @@ export class Api {
         return Promise.reject(res.status)
       })
   }
+
+  addLike(cardId) {
+    return fetch(`${this.url}/cards/${cardId}/likes`, {
+      method: 'PUT',
+      headers: this.headers
+    })
+      .then (res => {
+        if (res.ok) {
+          return res.json()
+        }
+        return Promise.reject(res.status)
+      })
+  }
+
+  addLike(cardId) {
+    return fetch(`${this.url}/cards/${cardId}/likes`, {
+      method: 'DELETE',
+      headers: this.headers
+    })
+      .then (res => {
+        if (res.ok) {
+          return res.json()
+        }
+        return Promise.reject(res.status)
+      })
+  }
 }

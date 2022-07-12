@@ -6,6 +6,7 @@ import { FormValidator } from '../components/FormValidator.js';
 import { Section } from '../components/Section.js';
 import { PopupWithForm } from '../components/PopupWithForm.js';
 import { PopupWithImage } from '../components/PopupWithImage.js';
+import { PopupWithText } from '../components/PopupWithText.js';
 import { UserInfo } from '../components/UserInfo.js';
 import { profileOpenBtn, cardAddBtn, avatarEditBtn } from '../utils/constants.js';
 import { Api } from '../components/Api.js';
@@ -43,10 +44,25 @@ const avatarPopup = new PopupWithForm({
 // попап с картинкой
 const imagePopup = new PopupWithImage('.popup_content_image');
 
+// попап подтверждения удаления карточки
+const deleteConfirmPopup = new PopupWithText ({
+  popupSelector: '.popup_content_confirmation',
+  handleFormSubmit: (cardId) => {
+    const card = document.getElementById(cardId);
+    api.deleteCard(cardId)
+    .then(() => {
+      deleteConfirmPopup.close();
+      card.remove();
+      card = null;
+    })
+    .catch(err => console.log(`Ошибка: ${err}`))
+  }
+})
+
 // создаем карточки
 const createCard = (origin) => {
   const userId = userInfo.getUserID();
-  const card = new Card (origin, '#element', ()=>imagePopup.open(origin), userId, api);
+  const card = new Card (origin, '#element', ()=>imagePopup.open(origin), userId, api, ()=>deleteConfirmPopup.open(origin));
   const cardElement = card.generateCard();
   return cardElement;
 }
@@ -99,6 +115,8 @@ const cardAddPopup = new PopupWithForm({
   }
 });
 
+
+
 // валидация форм
 const profileValidator = new FormValidator(config, profilePopup.form);
 const cardAddValidator = new FormValidator(config, cardAddPopup.form);
@@ -112,6 +130,7 @@ cardAddPopup.setEventListeners();
 imagePopup.setEventListeners();
 profilePopup.setEventListeners();
 avatarPopup.setEventListeners();
+deleteConfirmPopup.setEventListeners();
 
 // функции открытия попапов
 const openCardAddPopup = () => {
