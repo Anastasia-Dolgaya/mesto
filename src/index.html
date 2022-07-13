@@ -16,7 +16,7 @@
       <section class="profile">
         <div class="profile__author">
           <div class="profile__avatar-container">
-            <img class="profile__avatar" src="" alt="Аватар пользователя">
+            <img class="profile__avatar" src=".images/avatar.jpg" alt="Аватар пользователя">
             <button type="button" class="profile__avatar-button"></button>
           </div>
           <div class="profile__info">
@@ -83,7 +83,7 @@
         <label class="popup__field">
           <input
             type="text"
-            id="name-input"
+            id="card-name-input"
             class="popup__input popup__input_type_name"
             name="name"
             value=""
@@ -91,7 +91,7 @@
             minlength="2"
             maxlength="30"
             required>
-          <span class="popup__input-error name-input-error"></span>
+          <span class="popup__input-error card-name-input-error"></span>
         </label>
         <label class="popup__field">
           <input
@@ -127,13 +127,13 @@
         <label class="popup__field">
           <input
             type="url"
-            id="link-input"
+            id="avatar-input"
             class="popup__input popup__input_type_link"
             name="link"
             value=""
             placeholder="Ссылка на картинку"
             required>
-          <span class="popup__input-error link-input-error"></span>
+          <span class="popup__input-error avatar-input-error"></span>
         </label>
         <button type="submit" class="popup__save-button">Сохранить</button>
       </form>
