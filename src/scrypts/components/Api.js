@@ -90,7 +90,7 @@ export class Api {
       })
   }
 
-  handleLikes(cardId, isLiked) {
+  fetchLikes(cardId, isLiked) {
     return fetch(`${this._url}/cards/${cardId}/likes`, {
       method: isLiked ? 'DELETE' : 'PUT',
       headers: this._headers

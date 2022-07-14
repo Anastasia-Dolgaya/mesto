@@ -1,12 +1,13 @@
+// убрала api из конструктора и вынесла логику постановки лайка в отдельную функцию, которую передаю в конструктор
 export class Card {
-  constructor(data, templateSelector, handleCardClick, userID, api, handleDeleteClick) {
+  constructor(data, templateSelector, handleCardClick, userID, handleLikes, handleDeleteClick) {
     this._data = data;
     this._handleCardClick = handleCardClick;
     this._templateSelector = templateSelector;
     this._userId = userID;
     this._cardOwnerId = data.owner._id;
     this._cardId = data._id;
-    this._api = api;
+    this._handleLikes = handleLikes;
     this._handleDeleteClick = handleDeleteClick;
   }
 
@@ -41,7 +42,7 @@ export class Card {
     this._image.alt = this._data.description;
     this._element.querySelector('.element__title').textContent = this._data.name;
     this._element.setAttribute('id', this._cardId);
-    this._renderLike(this._data);
+    this.renderLike(this._data);
 
     return this._element;
   }
@@ -50,7 +51,7 @@ export class Card {
     return (data.likes.find(item => item._id === this._userId));
   }
 
-  _renderLike(data) {
+  renderLike(data) {
     if (this.isLiked(data)) {
       this._likeBtn.classList.add('element__like-button_active');
     } else {
@@ -59,26 +60,14 @@ export class Card {
     this._likeNumber.textContent = data.likes.length;
   }
 
-  _updateLike() {
-    if (this._likeBtn.classList.contains('element__like-button_active')) {
-      this._api.handleLikes(this._cardId, true)
-        .then(data => {
-          this._renderLike(data);
-        })
-        .catch(err => console.log(`Ошибка: ${err}`))
-    } else {
-      this._api.handleLikes(this._cardId, false)
-        .then(data => {
-          this._renderLike(data);
-        })
-        .catch(err => console.log(`Ошибка: ${err}`))
-    }
+  delete() {
+    this._element.remove();
   }
 
   _setEventListeners() {
     //like button
     this._likeBtn.addEventListener('click', () => {
-      this._updateLike();
+      this._handleLikes(this, this._cardId, this._likeBtn);
     });
 
     //image popup

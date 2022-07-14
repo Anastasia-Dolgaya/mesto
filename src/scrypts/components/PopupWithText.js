@@ -8,16 +8,16 @@ export class PopupWithText extends Popup {
     this._button = this._popup.querySelector('.popup__save-button');
   }
 
-  open(data) {
+  open(card) {
     super.open();
-    return this._cardId = data._id;
+    this._card = card;
   }
 
   setEventListeners() {
     super.setEventListeners();
     this._form.addEventListener('submit', (event) => {
       event.preventDefault();
-      this._handleFormSubmit(this._cardId);
+      this._handleFormSubmit(this._card);
     })
   }
 }

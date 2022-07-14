@@ -1,21 +1,15 @@
 export class UserInfo {
-  constructor({infoSelector}, api) {
+  constructor({infoSelector}) {
     this._info = infoSelector;
     this._name = document.querySelector(this._info.name);
     this._about = document.querySelector(this._info.about);
     this._avatar = document.querySelector(this._info.avatar)
-    this._api = api;
   }
 
-  syncUserInfo() {
-    return this.getUserInfo()
-      .then((data) => {
-        this._data = data;
-        this.setUserInfo(data);
-        this.setUserAvatar(data);
-        return this._data;
-      })
-      .catch(err => console.log(`Ошибка: ${err}`))
+  syncUserInfo(data) {
+    this._data = data;
+    this.setUserInfo(data);
+    this.setUserAvatar(data);
   }
 
   getUserID() {
@@ -23,7 +17,10 @@ export class UserInfo {
   }
 
   getUserInfo() {
-    return this._api.fetchUserData();
+    return {
+      name: this._name.textContent,
+      about: this._about.textContent
+    }
   }
 
   setUserInfo(obj) {

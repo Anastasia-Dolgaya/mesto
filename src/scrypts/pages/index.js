@@ -63,21 +63,36 @@ const imagePopup = new PopupWithImage('.popup_content_image');
 // попап подтверждения удаления карточки
 const deleteConfirmPopup = new PopupWithText ({
   popupSelector: '.popup_content_confirmation',
-  handleFormSubmit: (cardId) => {
-    const card = document.getElementById(cardId);
-    api.deleteCard(cardId)
+  handleFormSubmit: (card) => {
+    api.deleteCard(card._cardId)
       .then(() => {
         deleteConfirmPopup.close();
-        card.remove();
+        card.delete();
       })
       .catch(err => console.log(`Ошибка: ${err}`))
   }
 })
 
+function handleLikes(card, cardId, button) {
+  if (button.classList.contains('element__like-button_active')) {
+    api.fetchLikes(cardId, true)
+    .then(data => {
+      card.renderLike(data);
+    })
+    .catch(err => console.log(`Ошибка: ${err}`))
+  } else {
+    api.fetchLikes(cardId, false)
+    .then(data => {
+      card.renderLike(data);
+    })
+    .catch(err => console.log(`Ошибка: ${err}`))
+  }
+}
+
 // создаем карточки
 const createCard = (origin) => {
   const userId = userInfo.getUserID();
-  const card = new Card (origin, '#element', ()=>imagePopup.open(origin), userId, api, ()=>deleteConfirmPopup.open(origin));
+  const card = new Card (origin, '#element', ()=>imagePopup.open(origin), userId, handleLikes, ()=>deleteConfirmPopup.open(card));
   const cardElement = card.generateCard();
   return cardElement;
 }
@@ -91,8 +106,9 @@ const cardsList = new Section ({
   '.elements');
 
 // сихнронизируем информацию профиля и отрисовываем карточки с сервера
-Promise.all([api.fetchInitialCards(), userInfo.syncUserInfo()])
-  .then(([cardsData]) => {
+Promise.all([api.fetchInitialCards(), api.fetchUserData()])
+  .then(([cardsData, userData]) => {
+    userInfo.syncUserInfo(userData);
     cardsList.renderItems(cardsData);
   })
   .catch(err => console.log(`Ошибка: ${err}`))
@@ -118,9 +134,9 @@ const cardAddPopup = new PopupWithForm({
 const profileValidator = new FormValidator(config, profilePopup.form);
 const cardAddValidator = new FormValidator(config, cardAddPopup.form);
 const avatarEditValidator = new FormValidator(config, avatarPopup.form);
-profileValidator.enableValidation();
-cardAddValidator.enableValidation();
-avatarEditValidator.enableValidation();
+profileValidator.initForm();
+cardAddValidator.initForm();
+avatarEditValidator.initForm();
 
 // закрытие попапов
 cardAddPopup.setEventListeners();
@@ -132,20 +148,17 @@ deleteConfirmPopup.setEventListeners();
 // функции открытия попапов
 const openCardAddPopup = () => {
   cardAddValidator.resetForm();
-  cardAddValidator.initForm(false);
+  cardAddValidator.toggleButtonState();
   cardAddPopup.open();
 }
 
 const openProfilePopup = () => {
   profileValidator.resetForm();
-  profileValidator.initForm(false);
-  userInfo.getUserInfo()
-    .then(obj => {
-      profilePopup.form.querySelector('.popup__input_type_name').value = obj.name;
-      profilePopup.form.querySelector('.popup__input_type_about').value = obj.about;
-      profilePopup.open();
-    })
-    .catch(err => console.log(`Ошибка: ${err}`))
+  const profileData = userInfo.getUserInfo();
+  profilePopup.form.querySelector('.popup__input_type_name').value = profileData.name;
+  profilePopup.form.querySelector('.popup__input_type_about').value = profileData.about;
+  profileValidator.toggleButtonState();
+  profilePopup.open();
 }
 
 const openAvatarPopup = () => {
